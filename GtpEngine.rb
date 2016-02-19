@@ -1,4 +1,9 @@
 require './Ord.rb'
+require 'logger'
+
+logger_file = open('./ruby_log', File::WRONLY | File::CREAT)
+LOGGER = Logger.new(logger_file)
+LOGGER.level = Logger::INFO
 
 class GtpEngine
   def initialize(color, io)
@@ -10,6 +15,7 @@ class GtpEngine
   def send(s)
     return unless @io
     puts " GTP <- #{s}"
+    LOGGER.info "send: #{s}"
     @io.puts(s)
     receive
   end
@@ -24,6 +30,7 @@ class GtpEngine
 	break
       end
     end
+    LOGGER.info "rcv: #{rcv}"
     rcv
   end
 
